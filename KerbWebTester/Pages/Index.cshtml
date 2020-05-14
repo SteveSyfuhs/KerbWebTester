@@ -1,0 +1,66 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Home page";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Test your Kerberos Tickets</h1>
+
+    <p>Use this tool to verify the contents of a Kerberos ticket.</p>
+</div>
+
+<form method="post" autocomplete="off">
+    <div class="text-left">
+        <h3>Instructions</h3>
+        <ol>
+            <li>
+                Create a new Service Account in your directory of choice.
+            </li>
+            <li>
+                Set up it's SPN to <code>@ViewData["SPN"]</code>. For instructions on how to set this up in Active Directory take a look here:
+                <a href="https://syfuhs.net/2017/03/20/configuring-an-spn-in-active-directory-for-kerberos-net/" target="_blank">Configuring an SPN</a>.
+            </li>
+            <li>
+                Enter the Domain Name of the service account into this form: <br />
+
+                <input name="realm" type="text" autocomplete="off" style="width: 300px" />
+            </li>
+            <li>
+                Enter the sAMAccountName of the service account into this form: <br />
+
+                <input name="name" type="text" autocomplete="off" style="width: 300px" />
+            </li>
+            <li>
+                Enter the service account password into this form: <br />
+
+                <input name="password" type="password" autocomplete="off" style="width: 300px" />
+            </li>
+            <li>
+                Press the button: <input type="submit" value="Request and Decode Ticket" />
+            </li>
+        </ol>
+
+        <div>
+            <b>Note:</b> The service account password is sent to the backend, however it is never stored and is only used while the page is open.
+        </div>
+    </div>
+</form>
+
+@if (!string.IsNullOrWhiteSpace(ViewData["Error"] as string))
+{
+    <div>
+        <div class="alert-danger"><b>Error: </b> @ViewData["Error"]</div>
+    </div>
+}
+
+@if (!string.IsNullOrWhiteSpace(ViewData["Ticket"] as string))
+{
+    <div>
+        <code>
+<pre>
+@ViewData["Ticket"]
+</pre>
+        </code>
+    </div>
+}
